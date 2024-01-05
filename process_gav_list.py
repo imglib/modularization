@@ -15,10 +15,7 @@ from maven import POM
 
 # -- Main --
 
-run_mvn_dependency_get = True
-force_gh_repo_clone = False
-
-def main(gav_file: Path, class_list: Path):
+def main(gav_file: Path, class_list: Path, run_mvn_dependency_get: bool, force_repo_clone: bool):
 
     log.info(f"gav_file = '{gav_file}'")
     log.info(f"class_list = '{class_list}'")
@@ -44,7 +41,7 @@ def main(gav_file: Path, class_list: Path):
         # clone into ./work/
         repo_path = Path(f"./work/{gh_repo}")
         log.info(f"repo_path = '{repo_path}'")
-        if force_gh_repo_clone and repo_path.exists():
+        if force_repo_clone and repo_path.exists():
             shutil.rmtree(repo_path)
         if not repo_path.exists():
             subprocess.run(["gh", "repo", "clone", gh_repo, repo_path, "--", "--depth", "1"], check=True)
@@ -66,10 +63,18 @@ if __name__ == '__main__':
 
     parser.add_argument("gav_file", help="file with list of GAVs")
     parser.add_argument("class_list", type=str, help="file with fully qualified classnames")
+    parser.add_argument("--no_mvn_dependency_get", dest='run_mvn_dependency_get', action='store_false', help="whether to run mvn dependency:get for each GAV")
+    parser.add_argument("--no_force_repo_clone", dest='force_repo_clone', action='store_false', help="whether to re-clone repos that are already present in work directory")
+
 
     args = parser.parse_args()
+    run_mvn_dependency_get = args.run_mvn_dependency_get
+    force_repo_clone = args.force_repo_clone
     gav_file = Path(args.gav_file).expanduser()
     class_list = Path(args.class_list).expanduser()
 
-    main(gav_file, class_list)
+    print(f"run_mvn_dependency_get = {run_mvn_dependency_get}")
+    print(f"force_repo_clone = {force_repo_clone}")
+
+    main(gav_file, class_list, run_mvn_dependency_get, force_repo_clone)
 
