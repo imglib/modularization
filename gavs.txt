@@ -57,7 +57,7 @@ net.imagej:imagej-plugins-tools:0.3.1
 net.imagej:imagej-plugins-uploader-ssh:0.3.2
 net.imagej:imagej-plugins-uploader-webdav:0.3.3
 net.imagej:imagej-scripting:0.8.4
-net.imagej:imagej-server:0.2.0
+net.imagej:imagej-server:0.1.2
 net.imagej:imagej-tensorflow:1.1.7
 net.imagej:imagej-ui-awt:0.3.1
 net.imagej:imagej-ui-swing:1.0.1

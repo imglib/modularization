@@ -36,6 +36,9 @@ class GAV:
     def __str__(self):
         return f"{self.g}:{self.a}:{self.v}"
 
+    def __eq__(self, other):
+        return isinstance(other, GAV) and self.g == other.g and self.a == other.a and self.v == other.v
+
     def matches(self, gav) -> bool:
         return (self.g == gav.g or self.g == '*' or gav.g == '*') and (
                 self.a == gav.a or self.a == '*' or gav.a == '*') and (

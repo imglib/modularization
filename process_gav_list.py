@@ -51,13 +51,21 @@ def main(gav_file: Path, class_list: Path, run_mvn_dependency_get: bool, force_r
         if clz_to_files:
             dependent_gavs.append(gav)
 
-    for gav in dependent_gavs:
-        print(gav)
+    unique_list = []
+    for item in dependent_gavs:
+        if item not in unique_list:
+            unique_list.append(item)
 
+    for gav in unique_list:
+        print(f"{gav}  {POM(gav.pomPath()).scmURL}")
+
+    print()
+    for gav in unique_list:
+        print(POM(gav.pomPath()).scmURL)
 
 if __name__ == '__main__':
 
-    logging.basicConfig(level=logging.DEBUG, format="[%(levelname)s] %(message)s")
+    logging.basicConfig(level=logging.WARNING, format="[%(levelname)s] %(message)s")
 
     parser = argparse.ArgumentParser(description="Process GAV list.")
 
@@ -72,9 +80,6 @@ if __name__ == '__main__':
     force_repo_clone = args.force_repo_clone
     gav_file = Path(args.gav_file).expanduser()
     class_list = Path(args.class_list).expanduser()
-
-    print(f"run_mvn_dependency_get = {run_mvn_dependency_get}")
-    print(f"force_repo_clone = {force_repo_clone}")
 
     main(gav_file, class_list, run_mvn_dependency_get, force_repo_clone)
 
